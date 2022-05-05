@@ -21,6 +21,9 @@ def paint():
     image=Img.query.all()
     return render_template('index2.html')
 
+@app.route('/remove')
+def remove():
+    return render_template('tab3.html')
 
 @app.route('/upload', methods=['POST'])
 def upload():
