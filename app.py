@@ -16,6 +16,10 @@ db_init(app)
 def home():
     return render_template('index.html')
 
+@app.route('/gallery')
+def gallery():
+    images=MyUpload.query.all()
+    return render_template('gallery.html',images=images)
 @app.route('/paint')
 def paint():
     image=MyUpload.query.filter_by(id=1).first()
