@@ -48,7 +48,9 @@ def upload():
         if file and allowed_files(file.filename):
                 print(file.filename)
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(os.getcwd(),"static/uploads",filename))
+                filepath=os.path.join(os.getcwd(),"static/uploads",filename)
+                print(filepath)
+                file.save(os.path.join(filepath))
                 
                 upload = MyUpload(img =f"/static/uploads/{filename}", imgtype = os.path.splitext(file.filename)[1])
                 db.session.add(upload)
