@@ -20,10 +20,6 @@ def home():
 def gallery():
     images=MyUpload.query.all()
     return render_template('gallery.html',images=images)
-@app.route('/paint')
-def paint():
-    image=MyUpload.query.filter_by(id=1).first()
-    return render_template('index2.html',data=image)
 
 @app.route('/remove')
 def remove():
