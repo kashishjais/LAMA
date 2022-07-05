@@ -1,16 +1,31 @@
-<div class="container">
-    <div>
-      <canvas id="canvas" width="500" height="500"></canvas>
+
+  <main>
+    <div class="left-block">
+      <div class="brushes">
+        <button type="button" value="1"></button>
+        <button type="button" value="5"></button>
+        
+        <button type="button" value="9"></button>
+      </div>
+      
     </div>
-    <div>
-      <button id="save" type="button">
-        save
-      </button>
-      <input
-        type="file"
-        id="load"
-        name="avatar"
-        accept="image/png"
-      >
+    <div class="right-block">
+      <div class="container">
+        <div>
+          <canvas id="canvas" width="500" height="500"></canvas>
+        </div>
+        
+          <div class="buttons">
+            <button id="clear" type="button">Clear</button>
+            <button id="save" type="button">Save</button>
+          </div> 
+          <input
+            type="file"
+            id="load"
+            name="avatar"
+            accept="image/png"
+          >
+        </div>
+      </div>
     </div>
-  </div>
+  </main>
