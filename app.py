@@ -21,6 +21,10 @@ def gallery():
     images=MyUpload.query.all()
     return render_template('gallery.html',images=images)
 
+@app.route('/canvas')
+def canvas():
+    return render_template('canvas.html')    
+
 @app.route('/remove')
 def remove():
     return render_template('tab3.html')
