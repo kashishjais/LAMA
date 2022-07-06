@@ -33,7 +33,8 @@ window.onload = () => {
     }
     draw(event) {
       if (this.isDrawing) {
-        this.context.fillRect(event.pageX - this.offsetLeft, event.pageY - this.offsetTop, 2, 2);
+        this.context.arc(event.pageX - this.offsetLeft, event.pageY - this.offsetTop, 10,0,2*Math.PI,false);
+        this.context.fill();
       }
     }
     save() {
