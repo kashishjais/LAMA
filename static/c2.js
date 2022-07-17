@@ -1,3 +1,52 @@
+function loadTheImage(image) {
+  
+  const canvas = this.canvas;
+  fabric.Image.fromURL(image, function(img) {
+    // add background image
+    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+       scaleX: canvas.width / img.width,
+       scaleY: canvas.height / img.height
+    });
+ });
+}
+
+function converterDataURItoBlob(dataURI) {
+  let byteString;
+  let mimeString;
+  let ia;
+
+  if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+    byteString = atob(dataURI.split(',')[1]);
+  } else {
+    byteString = encodeURI(dataURI.split(',')[1]);
+  }
+  // separate out the mime component
+  mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+  // write the bytes of the string to a typed array
+  ia = new Uint8Array(byteString.length);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([ia], {type:mimeString});
+}
+
+function generateMask(image) {
+  // remove background image
+  canvas.setBackgroundImage(null, canvas.renderAll.bind(canvas));
+  var dataURL = canvas.toDataURL();
+  document.getElementById("img").src = dataURL;
+  console.log(image);
+  loadTheImage(image)
+}
+
+function saveAs(blob, fileName){
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = fileName;
+  a.click();
+}
+
 var canvas = new fabric.Canvas("draw", {
 	isDrawingMode: true,
   freeDrawingCursor: 'none'
@@ -6,7 +55,7 @@ var canvas = new fabric.Canvas("draw", {
 var cursor = new fabric.StaticCanvas("cursor");
 
 canvas.freeDrawingBrush.width = 20;
-canvas.freeDrawingBrush.color = '#ff0000';
+canvas.freeDrawingBrush.color = '#000000';
 
 var cursorOpacity = .5;
 var mousecursor = new fabric.Circle({ 
@@ -34,10 +83,11 @@ canvas.on('mouse:move', function (evt) {
 
 canvas.on('mouse:out', function () {
   // put circle off screen
+  
   mousecursor
   	.set({
-      top: mousecursor.originalState.top,
-      left: mousecursor.originalState.left
+      top: -100,
+      left: -100
     })
     .setCoords()
     .canvas.renderAll();
@@ -99,3 +149,23 @@ document.getElementById("mode").onchange = function () {
   	cursor.add(mousecursor);
   }
 }
+
+document.querySelector("#btngen").addEventListener("click", ()=> {
+  generateMask(document.querySelector("#btngen").dataset.img)
+});
+
+
+document.querySelector("#btnsave").addEventListener("click", ()=> {
+  // save image from #img to local storage
+  var dataURL = document.getElementById("img").src;
+  var blob = converterDataURItoBlob(dataURL);
+  var fileName = "mask.png";
+  saveAs(blob, fileName);
+});
+
+document.querySelector("#btnclear").addEventListener("click", ()=> {
+  // clear image from #img
+  document.getElementById("img").src = "";
+  canvas.setBackgroundImage(null, canvas.renderAll.bind(canvas));
+  loadTheImage(document.querySelector("#btnclear").dataset.img)
+});

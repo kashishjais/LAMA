@@ -6,7 +6,7 @@ class MyUpload(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     img = db.Column(db.String(255))
     imgtype = db.Column(db.String(4))
-   
+    mask = db.Column(db.String(255),default='')
     created_on = db.Column(db.DateTime, index=True, default=datetime.now)
 
     def __repr__(self):

@@ -23,7 +23,10 @@ def gallery():
 
 @app.route('/canvas')
 def canvas():
-    return render_template('canvas.html')    
+    id = request.args.get('i')
+    image = MyUpload.query.filter_by(id=id).first()
+    image_path = image.img
+    return render_template('canvas.html',image=image,image_path=image_path)
 
 @app.route('/remove')
 def remove():
