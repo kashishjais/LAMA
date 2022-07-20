@@ -155,6 +155,7 @@ document.querySelector("#btngen").addEventListener("click", ()=> {
 });
 
 
+
 document.querySelector("#btnsave").addEventListener("click", ()=> {
   // save image from #img to local storage
   var dataURL = document.getElementById("img").src;

@@ -16,6 +16,12 @@ db_init(app)
 def home():
     return render_template('index.html')
 
+@app.route('/home')
+def master():
+    return render_template('home.html')
+
+
+
 @app.route('/gallery')
 def gallery():
     images=MyUpload.query.all()
@@ -28,13 +34,9 @@ def canvas():
     image_path = image.img
     return render_template('canvas.html',image=image,image_path=image_path)
 
-@app.route('/remove')
-def remove():
-    return render_template('tab3.html')
 
 def allowed_files(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'jpg','png'}
-
 
 @app.route('/upload', methods=['POST','GET'])
 def upload():
@@ -78,5 +80,24 @@ def get_img(id):
 
     return Response(img.img, mimetype=img.mimetype)
 
+@app.route('/delete/<int:id>')
+def delete(id):
+    img = MyUpload.query.filter_by(id=id).first()
+
+    try:
+        db.session.delete(img)
+        db.session.commit()
+        flash("image deleted successfully!!")
+        images=MyUpload.query.all()
+        return render_template('gallery.html',images=images)
+
+
+    except:
+        flash("whoops! there was a problem ")    
+        images=MyUpload.query.all()
+        return render_template('gallery.html',images=images)
+
+
+    
 if __name__ == '__main__':
   app.run(debug=True)    

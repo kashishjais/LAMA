@@ -2,6 +2,7 @@
     position: relative;
     width: 500px;
     height: 500px;
+    float:left;
   }
   
   canvas {
@@ -20,3 +21,7 @@
     pointer-events: none!important;
   }
   
+  #output{
+    float:center;
+  
+  }
