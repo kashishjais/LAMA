@@ -13,12 +13,12 @@ db_init(app)
 
 
 @app.route('/')
-def home():
-    return render_template('index.html')
+def upload_file():
+    return render_template('upload_file.html')
 
 @app.route('/home')
-def master():
-    return render_template('home.html')
+def home():
+    return render_template('index.html')
 
 
 
@@ -98,6 +98,8 @@ def delete(id):
         return render_template('gallery.html',images=images)
 
 
+    
+        
     
 if __name__ == '__main__':
   app.run(debug=True)    

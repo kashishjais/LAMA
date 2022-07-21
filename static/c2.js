@@ -156,13 +156,6 @@ document.querySelector("#btngen").addEventListener("click", ()=> {
 
 
 
-document.querySelector("#btnsave").addEventListener("click", ()=> {
-  // save image from #img to local storage
-  var dataURL = document.getElementById("img").src;
-  var blob = converterDataURItoBlob(dataURL);
-  var fileName = "mask.png";
-  saveAs(blob, fileName);
-});
 
 document.querySelector("#btnclear").addEventListener("click", ()=> {
   // clear image from #img
