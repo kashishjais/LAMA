@@ -12,15 +12,22 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db_init(app)
 
 
-@app.route('/')
+@app.route('/upload_file')
 def upload_file():
     return render_template('upload_file.html')
 
-@app.route('/home')
+@app.route('/')
 def home():
     return render_template('index.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
+@app.route('/feature')
+def feature():
+    return render_template('feature.html')    
+    
 
 @app.route('/gallery')
 def gallery():
@@ -33,6 +40,10 @@ def canvas():
     image = MyUpload.query.filter_by(id=id).first()
     image_path = image.img
     return render_template('canvas.html',image=image,image_path=image_path)
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')    
 
 
 def allowed_files(filename):
