@@ -155,7 +155,19 @@ document.querySelector("#btngen").addEventListener("click", ()=> {
 });
 
 
-
+document.querySelector("#btnsave").addEventListener("click",()=>
+{
+  var dataURL=document.getElementById("img").src;
+  
+  var img=document.querySelector("#btngen").dataset.img
+  console.log(dataURL)
+  
+  console.log(img)
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", "saveimg", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send(`data=${dataURL}&file=${img}`);
+});
 
 document.querySelector("#btnclear").addEventListener("click", ()=> {
   // clear image from #img

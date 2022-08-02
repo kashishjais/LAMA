@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, Response,redirect,session,flash
+from flask import Flask, jsonify, render_template, request, Response,redirect,session,flash
 from werkzeug.utils import secure_filename
 import os
 from db import MyUpload, db_init, db
 
 import base64
+import io
+from PIL import Image
 
 app = Flask(__name__)
 app.secret_key='newproject'
@@ -108,7 +110,21 @@ def delete(id):
         images=MyUpload.query.all()
         return render_template('gallery.html',images=images)
 
-
+@app.route('/saveimg',methods=['POST'])
+def saveimg():
+    if request.method=='POST':
+        data=request.form.get('data')
+        file=request.form.get('file')
+        data=data.split(',')[-1]
+        print(data)
+       
+        img = Image.open(io.BytesIO(base64.decodebytes(bytes(data, "utf-8"))))
+        filename=os.path.basename(file)
+        name,ext=os.path.splitext(filename)
+        savepath=os.path.join('static','mask',filename)
+        print(savepath)
+        img.save(savepath)
+    return jsonify({'status':'success'})
     
         
     
