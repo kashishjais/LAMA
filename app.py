@@ -7,6 +7,7 @@ import base64
 import io
 from PIL import Image
 
+
 app = Flask(__name__)
 app.secret_key='newproject'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///uploads.sqlite'
@@ -117,7 +118,6 @@ def saveimg():
         file=request.form.get('file')
         data=data.split(',')[-1]
         print(data)
-       
         img = Image.open(io.BytesIO(base64.decodebytes(bytes(data, "utf-8"))))
         filename=os.path.basename(file)
         name,ext=os.path.splitext(filename)
