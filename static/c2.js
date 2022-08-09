@@ -36,7 +36,7 @@ function generateMask(image) {
   canvas.setBackgroundImage(null, canvas.renderAll.bind(canvas));
   var dataURL = canvas.toDataURL();
   document.getElementById("img").src = dataURL;
-  console.log(image);
+  // console.log(image);
   loadTheImage(image)
 }
 
@@ -152,21 +152,20 @@ document.getElementById("mode").onchange = function () {
 
 document.querySelector("#btngen").addEventListener("click", ()=> {
   generateMask(document.querySelector("#btngen").dataset.img)
+  document.querySelector("#btnsave").disabled = false;
 });
 
 
 document.querySelector("#btnsave").addEventListener("click",()=>
 {
   var dataURL=document.getElementById("img").src;
-  
   var img=document.querySelector("#btngen").dataset.img
-  console.log(dataURL)
-  
-  console.log(img)
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "saveimg", true);
+  // console.log(dataURL);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send(`data=${dataURL}&file=${img}`);
+  dataURL = encodeURIComponent(dataURL);
+  xhttp.send("file="+img+"&data="+dataURL);
 });
 
 document.querySelector("#btnclear").addEventListener("click", ()=> {

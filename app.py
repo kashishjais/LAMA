@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, render_template, request, Response,redirect,session,flash
 from werkzeug.utils import secure_filename
-import os
 from db import MyUpload, db_init, db
-
-import base64
-import io
+from io import BytesIO
 from PIL import Image
+import base64
+import re
+import os
 
 
 app = Flask(__name__)
@@ -116,15 +116,16 @@ def saveimg():
     if request.method=='POST':
         data=request.form.get('data')
         file=request.form.get('file')
-        data=data.split(',')[-1]
-        print(data)
-        img = Image.open(io.BytesIO(base64.decodebytes(bytes(data, "utf-8"))))
         filename=os.path.basename(file)
-        name,ext=os.path.splitext(filename)
         savepath=os.path.join('static','mask',filename)
-        print(savepath)
-        img.save(savepath)
-    return jsonify({'status':'success'})
+        content = data.split(';')[1]
+        image_encoded = content.split(',')[1]
+        if not image_encoded.endswith('=='):
+            image_encoded += '=='
+        body = base64.decodebytes(image_encoded.encode('utf-8'))
+        with open(savepath, 'wb') as f:
+            f.write(body)
+    return jsonify({'status':'success','message':'image saved successfully','path':savepath})
     
         
     
