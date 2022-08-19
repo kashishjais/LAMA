@@ -6,6 +6,8 @@ from PIL import Image
 import base64
 import re
 import os
+import numpy as np
+import matplotlib as plt
 
 
 app = Flask(__name__)
@@ -125,6 +127,21 @@ def saveimg():
         body = base64.decodebytes(image_encoded.encode('utf-8'))
         with open(savepath, 'wb') as f:
             f.write(body)
+        image64 = base64.b64encode(open(file, 'rb').read())
+        image64 = image64.decode('utf-8')
+        print(f'Will use {file} for inpainting')
+        img = np.array(plt.imread(f'{file}')[:,:,:3])
+        with_mask = np.array(plt.imread(savepath)[:,:,:3])
+        mask = (with_mask[:,:,0]==1)*(with_mask[:,:,1]==0)*(with_mask[:,:,2]==0)
+        img = np.array((1-mask.reshape(mask.shape[0], mask.shape[1], -1))*plt.imread(file)[:,:,:3])
+        if '.jpeg' in file:
+            '''PYTHONPATH=. TORCH_HOME=$(pwd) python3 bin/predict.py model.path=$(pwd)/big-lama indir=$(pwd)/data_for_prediction outdir=/content/output dataset.img_suffix=.jpeg > /dev/null'''
+        elif '.jpg' in file:
+            '''PYTHONPATH=. TORCH_HOME=$(pwd) python3 bin/predict.py model.path=$(pwd)/big-lama indir=$(pwd)/data_for_prediction outdir=/content/output  dataset.img_suffix=.jpg > /dev/null'''
+        elif '.png' in file:
+            '''PYTHONPATH=. TORCH_HOME=$(pwd) python3 bin/predict.py model.path=$(pwd)/big-lama indir=$(pwd)/data_for_prediction outdir=/content/output  dataset.img_suffix=.png > /dev/null'''
+        else:
+            print(f'Error: unknown suffix .{file.split(".")[-1]} use [.png, .jpeg, .jpg]')
     return jsonify({'status':'success','message':'image saved successfully','path':savepath})
     
         

@@ -166,6 +166,11 @@ document.querySelector("#btnsave").addEventListener("click",()=>
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   dataURL = encodeURIComponent(dataURL);
   xhttp.send("file="+img+"&data="+dataURL);
+  Swal.fire(
+    'Good job!',
+    'You clicked the button!',
+    'success'
+  )
 });
 
 document.querySelector("#btnclear").addEventListener("click", ()=> {
