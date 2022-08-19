@@ -38,15 +38,13 @@ LOGGER = logging.getLogger(__name__)
 @hydra.main(config_path='../configs/prediction', config_name='default.yaml')
 def main(predict_config: OmegaConf):
     try:
-        # register_debug_signal_handlers()  # kill -10 <pid> will result in traceback dumped into log
+        # register_debug_signal_handlers(2)  # kill -10 <pid> will result in traceback dumped into log
 
         device = torch.device(predict_config.device)
 
         train_config_path = os.path.join(predict_config.model.path, 'config.yaml')
         os.chdir(r'C:\Users\KASHISH JAISWAL\Major_project\LAMA')
-        print('-========>',os.getcwd())
-        print('=========>',train_config_path)
-
+       
         with open(train_config_path, 'r') as f:
             train_config = OmegaConf.create(yaml.safe_load(f))
         
@@ -68,7 +66,7 @@ def main(predict_config: OmegaConf):
         if not os.path.exists(predict_config.indir):
             print('not found', predict_config.indir)
         else:
-            print('found',predict_config.indir)
+            print('found',predict_config.indir, os.listdir(predict_config.indir))
         dataset = make_default_val_dataset(predict_config.indir, **predict_config.dataset)
 
         print('dataset size',len(dataset))
